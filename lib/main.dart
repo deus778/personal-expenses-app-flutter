@@ -51,17 +51,43 @@ class MyHomePage extends StatelessWidget {
           Column(
             children: transactions.map((e) {
               return Card(
-                child: Row(children: [
-                  Container(
-                    child: Text(e.amount.toString()),
-                  ),
-                  Column(
-                    children: [
-                      Text(e.title!),
-                      Text(e.date.toString()),
-                    ],
-                  )
-                ]),
+                child: Row(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 30),
+                      child: Text(
+                        e.amount.toString(),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.purple),
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.purple, width: 2),
+                      ),
+                      padding: EdgeInsets.all(10),
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          e.title!,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.black),
+                        ),
+                        Text(
+                          e.date.toString(),
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                    ),
+                  ],
+                ),
               );
             }).toList(),
           ),
