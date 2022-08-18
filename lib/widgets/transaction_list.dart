@@ -11,49 +11,68 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 500,
-      child: ListView.builder(
-        itemBuilder: (context, index) => Card(
-          child: Row(
-            children: [
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 5, horizontal: 30),
-                child: Text(
-                  "\$ ${transactions[index].amount.toStringAsFixed(2)}",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Theme.of(context).primaryColor),
+      child: transactions.isEmpty
+          ? Column(
+              children: [
+                Text(
+                  'No transactions added yet!',
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                      color: Theme.of(context).primaryColor, width: 2),
+                SizedBox(
+                  height: 20,
                 ),
-                padding: EdgeInsets.all(10),
-              ),
-              Column(
-                children: [
-                  Text(
-                    transactions[index].title,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.black),
+                Container(
+                  height: 200,
+                  child: Image.asset(
+                    'assets/images/waiting.png',
+                    fit: BoxFit.cover,
                   ),
-                  Text(
-                    DateFormat.yMMMd().format(transactions[index].date),
-                    style: TextStyle(
-                      fontSize: 10,
-                      color: Colors.grey,
+                ),
+              ],
+            )
+          : ListView.builder(
+              itemBuilder: (context, index) => Card(
+                child: Row(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 30),
+                      child: Text(
+                        "\$ ${transactions[index].amount.toStringAsFixed(2)}",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Theme.of(context).primaryColor),
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Theme.of(context).primaryColor, width: 2),
+                      ),
+                      padding: EdgeInsets.all(10),
                     ),
-                  ),
-                ],
-                crossAxisAlignment: CrossAxisAlignment.start,
+                    Column(
+                      children: [
+                        Text(
+                          transactions[index].title,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.black),
+                        ),
+                        Text(
+                          DateFormat.yMMMd().format(transactions[index].date),
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
-        itemCount: transactions.length, // how many items should be build
-      ),
+              itemCount: transactions.length, // how many items should be build
+            ),
     );
   }
 }
