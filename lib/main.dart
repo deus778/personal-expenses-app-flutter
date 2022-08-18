@@ -10,7 +10,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter App',
+      title: 'Personal Expenses',
+      theme: ThemeData(
+          primarySwatch: Colors.purple,
+          accentColor: Colors.amber,
+          fontFamily: 'QuickSand',
+          appBarTheme: AppBarTheme(
+            textTheme: ThemeData.light()
+                .textTheme
+                .copyWith(titleMedium: TextStyle(fontFamily: 'OpenSans')),
+          )),
       home: MyHomePage(),
     );
   }
@@ -63,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter App'),
+        title: Text('Personal Expenses'),
         actions: [IconButton(onPressed: () => {}, icon: Icon(Icons.add))],
       ),
       body: SingleChildScrollView(
