@@ -13,14 +13,20 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Personal Expenses',
       theme: ThemeData(
-          primarySwatch: Colors.purple,
-          accentColor: Colors.amber,
-          fontFamily: 'QuickSand',
-          appBarTheme: AppBarTheme(
-            textTheme: ThemeData.light()
-                .textTheme
-                .copyWith(titleMedium: TextStyle(fontFamily: 'OpenSans')),
-          )),
+        primarySwatch: Colors.purple,
+        accentColor: Colors.amber,
+        fontFamily: 'QuickSand',
+        textTheme: ThemeData.light().textTheme.copyWith(
+              titleMedium: TextStyle(
+                  fontFamily: 'OpenSans',                
+                  fontSize: 14),
+            ),
+        appBarTheme: AppBarTheme(
+          textTheme: ThemeData.light()
+              .textTheme
+              .copyWith(titleMedium: TextStyle(fontFamily: 'OpenSans')),
+        ),      
+      ),
       home: MyHomePage(),
     );
   }
@@ -32,30 +38,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _userTransactions = [
-/*     Transaction(
-      id: "T1",
-      title: "New Shoes",
-      amount: 69.99,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: "T2",
-      title: "Weekly Groceries",
-      amount: 16.53,
-      date: DateTime.now(),
-    ), */
-  ];
+  final List<Transaction> _userTransactions = [];
 
   List<Transaction> get _recentTransactions {
-    return _userTransactions.where((transaction) => transaction.date.isAfter(DateTime.now().subtract(Duration(days: 7)))).toList();
+    return _userTransactions
+        .where((transaction) => transaction.date
+            .isAfter(DateTime.now().subtract(Duration(days: 7))))
+        .toList();
   }
 
-  void _addNewTransaction(String title, double amount) {
+  void _addNewTransaction(String title, double amount, DateTime date) {
     final newTx = Transaction(
       title: title,
       amount: amount,
-      date: DateTime.now(),
+      date: date == null ? DateTime.now() : date,
       id: DateTime.now().toString(),
     );
 
@@ -73,6 +69,12 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _deleteTransaction(String id) {
+    setState(() {    
+      _userTransactions.removeWhere((element) => element.id == id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: [
             Chart(_recentTransactions),
-            TransactionList(_userTransactions),
+            TransactionList(_userTransactions, _deleteTransaction),
           ],
         ),
       ),
