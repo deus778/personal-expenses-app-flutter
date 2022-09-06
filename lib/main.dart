@@ -17,15 +17,13 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.amber,
         fontFamily: 'QuickSand',
         textTheme: ThemeData.light().textTheme.copyWith(
-              titleMedium: TextStyle(
-                  fontFamily: 'OpenSans',                
-                  fontSize: 14),
+              titleMedium: TextStyle(fontFamily: 'OpenSans', fontSize: 14),
             ),
         appBarTheme: AppBarTheme(
           textTheme: ThemeData.light()
               .textTheme
               .copyWith(titleMedium: TextStyle(fontFamily: 'OpenSans')),
-        ),      
+        ),
       ),
       home: MyHomePage(),
     );
@@ -39,6 +37,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransactions = [];
+
+  bool _showChart = false;
 
   List<Transaction> get _recentTransactions {
     return _userTransactions
@@ -70,23 +70,49 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _deleteTransaction(String id) {
-    setState(() {    
+    setState(() {
       _userTransactions.removeWhere((element) => element.id == id);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      title: Text('Personal Expenses'),
+      actions: [IconButton(onPressed: () => {}, icon: Icon(Icons.add))],
+    );
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Personal Expenses'),
-        actions: [IconButton(onPressed: () => {}, icon: Icon(Icons.add))],
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Chart(_recentTransactions),
-            TransactionList(_userTransactions, _deleteTransaction),
+            Row(
+              children: [
+                Text('Show Chart!'),
+                Switch(
+                  value: _showChart,
+                  onChanged: (value) {
+                    setState(() {
+                      _showChart = value;
+                    });
+                  },
+                ),
+              ],
+              mainAxisAlignment: MainAxisAlignment.center,
+            ),
+            _showChart
+                ? Container(
+                    height: (MediaQuery.of(context).size.height -
+                            appBar.preferredSize.height -
+                            MediaQuery.of(context).padding.top) * 0.7,
+                    child: Chart(_recentTransactions))
+                : Container(
+                    height: (MediaQuery.of(context).size.height -
+                            appBar.preferredSize.height -
+                            MediaQuery.of(context).padding.top) *
+                        0.6,
+                    child:
+                        TransactionList(_userTransactions, _deleteTransaction)),
           ],
         ),
       ),

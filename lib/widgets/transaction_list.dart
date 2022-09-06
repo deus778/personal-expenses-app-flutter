@@ -10,10 +10,9 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 500,
-      child: transactions.isEmpty
-          ? Column(
+    return transactions.isEmpty
+        ? LayoutBuilder(builder: (ctx, constrants) {
+            return Column(
               children: [
                 Text(
                   'No transactions added yet!',
@@ -23,45 +22,45 @@ class TransactionList extends StatelessWidget {
                   height: 20,
                 ),
                 Container(
-                  height: 200,
+                  height: constrants.maxHeight * 0.6,
                   child: Image.asset(
                     'assets/images/waiting.png',
                     fit: BoxFit.cover,
                   ),
                 ),
               ],
-            )
-          : ListView.builder(
-              itemBuilder: (context, index) => Card(
-                margin: EdgeInsets.symmetric(
-                  vertical: 8,
-                  horizontal: 5,
+            );
+          })
+        : ListView.builder(
+            itemBuilder: (context, index) => Card(
+              margin: EdgeInsets.symmetric(
+                vertical: 8,
+                horizontal: 5,
+              ),
+              elevation: 5,
+              child: ListTile(
+                leading: CircleAvatar(
+                  radius: 30,
+                  child: Padding(
+                      padding: EdgeInsets.all(5),
+                      child: FittedBox(
+                          child: Text('\$${transactions[index].amount}'))),
                 ),
-                elevation: 5,
-                child: ListTile(
-                  leading: CircleAvatar(
-                    radius: 30,
-                    child: Padding(
-                        padding: EdgeInsets.all(5),
-                        child: FittedBox(
-                            child: Text('\$${transactions[index].amount}'))),
-                  ),
-                  title: Text(
-                    transactions[index].title,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  subtitle: Text(
-                    DateFormat.yMMMMd().format(transactions[index].date),
-                  ),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete),
-                    color: Theme.of(context).errorColor,
-                    onPressed: () => _deleteTransaction(transactions[index].id),
-                  ),
+                title: Text(
+                  transactions[index].title,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                subtitle: Text(
+                  DateFormat.yMMMMd().format(transactions[index].date),
+                ),
+                trailing: IconButton(
+                  icon: Icon(Icons.delete),
+                  color: Theme.of(context).errorColor,
+                  onPressed: () => _deleteTransaction(transactions[index].id),
                 ),
               ),
-              itemCount: transactions.length, // how many items should be build
             ),
-    );
+            itemCount: transactions.length, // how many items should be build
+          );
   }
 }
