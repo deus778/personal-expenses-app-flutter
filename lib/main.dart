@@ -129,11 +129,8 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    final isLandscape = mediaQuery.orientation == Orientation.landscape;
-    final PreferredSizeWidget appBar = Platform.isIOS
+  PreferredSizeWidget _buildNavigationBar() {
+    return Platform.isIOS
         ? CupertinoNavigationBar(
             backgroundColor: Theme.of(context).primaryColor,
             middle: Text('Personal Expenses'),
@@ -148,6 +145,13 @@ class _MyHomePageState extends State<MyHomePage> {
             title: Text('Personal Expenses'),
             actions: [IconButton(onPressed: () => {}, icon: Icon(Icons.add))],
           );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final isLandscape = mediaQuery.orientation == Orientation.landscape;
+    final PreferredSizeWidget appBar = _buildNavigationBar();
     final txListWidget = Container(
         height: (mediaQuery.size.height -
                 appBar.preferredSize.height -
